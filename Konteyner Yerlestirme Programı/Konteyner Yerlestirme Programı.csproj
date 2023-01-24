@@ -58,6 +58,12 @@
     <Compile Include="Dizilim Ekranı.Designer.cs">
       <DependentUpon>Dizilim Ekranı.cs</DependentUpon>
     </Compile>
+    <Compile Include="DizilimEkraniIBC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DizilimEkraniIBC.Designer.cs">
+      <DependentUpon>DizilimEkraniIBC.cs</DependentUpon>
+    </Compile>
     <Compile Include="Siparis Bilgisi.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +80,9 @@
     </Compile>
     <EmbeddedResource Include="Dizilim Ekranı.resx">
       <DependentUpon>Dizilim Ekranı.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DizilimEkraniIBC.resx">
+      <DependentUpon>DizilimEkraniIBC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Siparis Bilgisi.resx">
       <DependentUpon>Siparis Bilgisi.cs</DependentUpon>
