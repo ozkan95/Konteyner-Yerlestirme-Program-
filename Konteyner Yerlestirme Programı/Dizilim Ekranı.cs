@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Security.Policy;
 using System.Data;
 using System.Data.SqlClient;
-
+using Org.BouncyCastle.Asn1.Mozilla;
 
 namespace Konteyner_Yerlestirme_Programı
 {
@@ -43,26 +43,38 @@ namespace Konteyner_Yerlestirme_Programı
 
             }
             if(kalan != 0)
-            { 
-                if (kalan != 4)
-                     
+            {       
+               if (kalan != 4)                    
                 {
                     var picture = (PictureBox)Controls.Find("pictureBox" + (tamdeger + 1), true)[0];
-
-                    if (kalan == 1)
+                    if (tamdeger==0)
                     {
-                        var oncekipicture = (PictureBox)Controls.Find("pictureBox" + (tamdeger), true)[0];
-                        picture.Image = FotorafGetir("002.png");
-                        oncekipicture.Image = FotorafGetir("003.jpg");
+                        if (kalan==1)
+                            picture.Image = FotorafGetir("001.jpg");
+                        else if (kalan==2)
+                            picture.Image = FotorafGetir("002.jpg");
+                        else if(kalan==3)
+                            picture.Image = FotorafGetir("003.jpg");
                     }
-                    if (kalan == 2)
+                    else
                     {
-                        var oncekipicture = (PictureBox)Controls.Find("pictureBox" + (tamdeger), true)[0];
-                        oncekipicture.Image = FotorafGetir("003.jpg");
-                        picture.Image = FotorafGetir("003.jpg");
+                       
+                        if (kalan == 1)
+                        {
+                            var oncekipicture = (PictureBox)Controls.Find("pictureBox" + (tamdeger), true)[0];
+                            picture.Image = FotorafGetir("002.jpg");
+                            oncekipicture.Image = FotorafGetir("003.jpg");
+                        }
+                       else if (kalan == 2)
+                        {
+                            var oncekipicture = (PictureBox)Controls.Find("pictureBox" + (tamdeger), true)[0];
+                            oncekipicture.Image = FotorafGetir("003.jpg");
+                            picture.Image = FotorafGetir("003.jpg");
+                        }
+                       else if (kalan == 3)
+                            picture.Image = FotorafGetir("003.jpg");
                     }
-                    if (kalan == 3)
-                        picture.Image = FotorafGetir("003.jpg");
+                   
                 }
             }   
         }
@@ -117,7 +129,7 @@ namespace Konteyner_Yerlestirme_Programı
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
-        {
+      {
 
         }
 
@@ -145,24 +157,36 @@ namespace Konteyner_Yerlestirme_Programı
                 if (kalan != 0)
                 {
                     if (kalan != 4)
-
                     {
                         var picture = (PictureBox)Controls.Find("pictureBox" + (tamdeger + 1), true)[0];
-
-                        if (kalan == 1)
+                        if (tamdeger==0)
                         {
-                            var oncekipicture = (PictureBox)Controls.Find("pictureBox" + (tamdeger), true)[0];
-                            picture.Image = FotorafGetir("002.png");
-                            oncekipicture.Image = FotorafGetir("003.jpg");
+                            if (kalan == 1)
+                                picture.Image = FotorafGetir("001.jpg");
+                            else if (kalan == 2)
+                                picture.Image = FotorafGetir("002.jpg");
+                            else if (kalan == 3)
+                                picture.Image = FotorafGetir("003.jpg");
                         }
-                        if (kalan == 2)
+                        else
                         {
-                            var oncekipicture = (PictureBox)Controls.Find("pictureBox" + (tamdeger), true)[0];
-                            oncekipicture.Image = FotorafGetir("003.jpg");
-                            picture.Image = FotorafGetir("003.jpg");
+                           
+                            if (kalan == 1)
+                            {
+                                var oncekipicture = (PictureBox)Controls.Find("pictureBox" + (tamdeger), true)[0];
+                                picture.Image = FotorafGetir("002.jpg");
+                                oncekipicture.Image = FotorafGetir("003.jpg");
+                            }
+                            if (kalan == 2)
+                            {
+                                var oncekipicture = (PictureBox)Controls.Find("pictureBox" + (tamdeger), true)[0];
+                                oncekipicture.Image = FotorafGetir("003.jpg");
+                                picture.Image = FotorafGetir("003.jpg");
+                            }
+                            if (kalan == 3)
+                                picture.Image = FotorafGetir("003.jpg");
                         }
-                        if (kalan == 3)
-                            picture.Image = FotorafGetir("003.jpg");
+                       
                     }
                 }
             }

@@ -21,6 +21,7 @@ namespace Konteyner_Yerlestirme_Programı
         {
             InitializeComponent();
         }
+        string deneme = System.IO.Directory.GetCurrentDirectory();
         static string conString = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\Baglanti.txt");
         SqlConnection con = new SqlConnection(conString);
         SqlTransaction tran = null;
