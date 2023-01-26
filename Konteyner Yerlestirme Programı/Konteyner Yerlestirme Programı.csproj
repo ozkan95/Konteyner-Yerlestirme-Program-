@@ -64,6 +64,7 @@
     <Compile Include="DizilimEkraniIBC.Designer.cs">
       <DependentUpon>DizilimEkraniIBC.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="Siparis Bilgisi.cs">
       <SubType>Form</SubType>
     </Compile>
