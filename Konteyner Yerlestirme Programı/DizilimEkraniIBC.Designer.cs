@@ -58,6 +58,7 @@
             this.picture12 = new System.Windows.Forms.PictureBox();
             this.picture11 = new System.Windows.Forms.PictureBox();
             this.picture1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox25)).BeginInit();
@@ -81,6 +82,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.picture12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -219,9 +221,9 @@
             this.groupBox1.Controls.Add(this.picture11);
             this.groupBox1.Controls.Add(this.picture1);
             this.groupBox1.Controls.Add(this.picture2);
-            this.groupBox1.Location = new System.Drawing.Point(53, 144);
+            this.groupBox1.Location = new System.Drawing.Point(44, 147);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(586, 713);
+            this.groupBox1.Size = new System.Drawing.Size(643, 766);
             this.groupBox1.TabIndex = 49;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tasarim";
@@ -362,12 +364,22 @@
             this.picture1.TabIndex = 49;
             this.picture1.TabStop = false;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(765, 42);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(506, 713);
+            this.pictureBox1.TabIndex = 50;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            // 
             // DizilimEkraniIBC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(716, 937);
+            this.ClientSize = new System.Drawing.Size(1313, 937);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBox25);
             this.Controls.Add(this.pictureBox24);
@@ -405,6 +417,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.picture12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -441,5 +454,6 @@
         private System.Windows.Forms.PictureBox picture3;
         private System.Windows.Forms.PictureBox picture12;
         private System.Windows.Forms.PictureBox picture11;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

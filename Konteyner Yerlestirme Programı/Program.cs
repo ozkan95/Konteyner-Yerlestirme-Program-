@@ -16,7 +16,7 @@ namespace Konteyner_Yerlestirme_Programı
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DizilimEkraniIBC());
+            Application.Run(new Ürün_Tasarimlari());
         }
     }
 }

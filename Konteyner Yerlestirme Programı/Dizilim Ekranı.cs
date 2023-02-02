@@ -38,9 +38,9 @@ namespace Konteyner_Yerlestirme_Programı
             for (int i = 1; i <= tamdeger; i++)
             {
                 var picture = (PictureBox)Controls.Find("pictureBox" + i,true) [0];
+
                 //MessageBox.Show(picture.Name);
                 picture.Image = FotorafGetir("004.jpg");
-
             }
             if(kalan != 0)
             {       
@@ -129,7 +129,7 @@ namespace Konteyner_Yerlestirme_Programı
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
-      {
+        {
 
         }
 

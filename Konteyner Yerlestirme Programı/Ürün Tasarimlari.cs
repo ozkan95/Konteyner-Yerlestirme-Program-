@@ -20,7 +20,19 @@ namespace Konteyner_Yerlestirme_Programı
         private void button2_Click(object sender, EventArgs e)
         {
             Form1 dizilim = new Form1();
-            dizilim.ShowDialog();
+            dizilim.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DizilimEkraniIBC dizilimEkraniIBC = new DizilimEkraniIBC();
+            dizilimEkraniIBC.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DizilimMix mix = new DizilimMix();
+            mix.Show();
         }
     }
 }

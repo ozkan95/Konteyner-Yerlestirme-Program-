@@ -4,15 +4,35 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
 
 namespace Konteyner_Yerlestirme_Programı
 {
    public class Helper
     {
-       public static Size TabanBoyut = new Size(585, 712);
-       public static Size PaletBoyutu = new Size(132,132);
-      public  static Size IbcYatayBoyut = new Size(142, 118);
-      public  static Size IbcDikeyBoyut = new Size(118, 142);
+        public static int IlkKatBaslangic = 35;
+        public static int IlkKatBitis = 1420;
+        public static int KatlararasiBosluk = 110;
+        public static int IkinciKatBaslangic = 1525;
+        public static int IkinciKatBitis = 2895;
+
+
+        public Bitmap IBCGetir(string ibc)
+        {
+            try
+            {
+                string filename = Application.StartupPath + "\\Konteyner Yerleştirme Projesi\\Tasarimlar";
+                Bitmap IBC = new Bitmap(filename + "\\ıbc" + ibc);
+                return IBC;
+            }
+            catch (Exception e)
+            {
+                return null;
+                MessageBox.Show(e.ToString());
+            }
+
+        }
 
     }
 }

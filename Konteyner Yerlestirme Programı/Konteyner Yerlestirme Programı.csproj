@@ -52,6 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DesenOlusturma.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DesenOlusturma.Designer.cs">
+      <DependentUpon>DesenOlusturma.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dizilim Ekranı.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +70,13 @@
     <Compile Include="DizilimEkraniIBC.Designer.cs">
       <DependentUpon>DizilimEkraniIBC.cs</DependentUpon>
     </Compile>
+    <Compile Include="DizilimMix.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DizilimMix.Designer.cs">
+      <DependentUpon>DizilimMix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DolumEkipmanlari.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Siparis Bilgisi.cs">
       <SubType>Form</SubType>
@@ -79,11 +92,17 @@
     <Compile Include="Ürün Tasarimlari.Designer.cs">
       <DependentUpon>Ürün Tasarimlari.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DesenOlusturma.resx">
+      <DependentUpon>DesenOlusturma.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dizilim Ekranı.resx">
       <DependentUpon>Dizilim Ekranı.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DizilimEkraniIBC.resx">
       <DependentUpon>DizilimEkraniIBC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DizilimMix.resx">
+      <DependentUpon>DizilimMix.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Siparis Bilgisi.resx">
       <DependentUpon>Siparis Bilgisi.cs</DependentUpon>
