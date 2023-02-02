@@ -34,5 +34,11 @@ namespace Konteyner_Yerlestirme_Programı
             DizilimMix mix = new DizilimMix();
             mix.Show();
         }
+
+        private void Ürün_Tasarimlari_Load(object sender, EventArgs e)
+        {
+            button1.Enabled = false;
+            button2.Enabled = false;
+        }
     }
 }

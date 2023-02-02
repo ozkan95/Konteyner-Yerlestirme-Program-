@@ -29,6 +29,7 @@ namespace Konteyner_Yerlestirme_Programı
                 var kalanVaril = Varilsayi % 4;
                 var tamdegerVaril = Varilsayi / 4;
                 var DesenList = IbcDizilim1(2, 1, new List<int>());
+                PictureShow();
                 pictureDispos();
                 DizilimYap(false,Ibcsayi, Varilsayi);
 
@@ -138,8 +139,16 @@ namespace Konteyner_Yerlestirme_Programı
             txtVaril.Text=0.ToString();
             txtIbc.Text=0.ToString();
             groupBox1.Size = new Size(489, 595);
-          
-         //   DizilimYap();
+            groupBox1.BackColor = Color.White;
+            lbl1.BackColor = Color.Red;
+            lbl1.Width = 3;
+            lbl1.Height = 596;
+            lbl1.Location = new Point(238, 5);
+            lbl2.Width = 3;
+            lbl2.Height = 596;
+            lbl2.Location = new Point(246, 5);
+            lbl2.BackColor=Color.Red;
+           DizilimYap();
             PictureDoubleClick();
             SeciliPicture = pictureBox00;
            
@@ -160,6 +169,17 @@ namespace Konteyner_Yerlestirme_Programı
                 }
             }
          
+        }
+        void PictureShow()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    var picture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + j.ToString(), true)[0];
+                    picture.Show();
+                }
+            }
         }
 
         private void Picture_Click(object sender, EventArgs e)
@@ -193,7 +213,8 @@ namespace Konteyner_Yerlestirme_Programı
 
         void DizilimYap(bool desendengetir= false,int ibcsayi= 20, int varilsayi = 0)
         {
-            int[,] DesenIBC = { {1,2,1,2},{2,1,2,1},{1,2,1,2},{2,1,2,1},{1,2,1,2} };
+            int[,] DesenIBCYatay = { {1,2,1,2},{2,1,2,1},{1,2,1,2},{2,1,2,1},{1,2,1,2} };
+            int[,] DesenIBCDikey = { { 2,1,2,1}, { 1,2,1,2 }, { 2,1,2,1 }, { 1,2,1,2 }, { 2,1,2,1} };
 
             int LocationY = 10;
             int ibcsayaci = 0;
@@ -226,7 +247,8 @@ namespace Konteyner_Yerlestirme_Programı
                     {
                         if (ibcsayi != ibcsayaci)
                         {
-                            if (DesenIBC[i, j] == 2)
+                            int[,] Desendizi = checkIBCdikey.Checked == true ? DesenIBCDikey : DesenIBCYatay;
+                            if (Desendizi[i, j] == 2)
                             {
                                 picture.Size = new Size(98, 118);
                                 picture.Image = IbcGetir("2.jpg");
@@ -235,7 +257,7 @@ namespace Konteyner_Yerlestirme_Programı
                             else
                             {
                                 picture.Size = new Size(118, 98);
-                                picture.Image = IbcGetir("2.jpg");
+                                picture.Image = IbcGetir("1.jpg");
                                 ibcsayaci++;
                             }
                         }
@@ -259,44 +281,65 @@ namespace Konteyner_Yerlestirme_Programı
                                             if (kalan == 1)
                                             {
                                                 picture.Image = VarilGetir("001.jpg");
-                                                return;
+                                                kalan=kalan-2;
+                                              
                                             }
                                                 
                                             else if (kalan == 2)
                                             {
                                                 picture.Image = VarilGetir("002.jpg");
-                                                return;
+                                                kalan = kalan-3;
+                                                
                                             }
                                                
                                             else if (kalan == 3)
                                             {
                                                 picture.Image = VarilGetir("003.jpg");
-                                                return;
+                                                kalan = kalan - 4;
+                                                
+                                            }
+                                            else
+                                            {
+                                                picture.Hide();
                                             }
                                                
                                         }
                                         else
                                         {
-                                            var oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
+                                           
                                             picture.Size = new Size(114, 114);
                                             if (kalan == 1)
                                             {
-                                                
+                                                PictureBox oncekipicture;
+                                                if(j==0)
+                                               oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i-1).ToString() + 3.ToString(), true)[0];
+                                                else
+                                                    oncekipicture= (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j-1).ToString(), true)[0];
                                                 picture.Image = VarilGetir("002.jpg");
                                                 oncekipicture.Image = VarilGetir("003.jpg");
-                                                return ;
+                                                kalan = kalan - 2;
                                             }
                                             else if (kalan == 2)
                                             {
-                                           
+                                                PictureBox oncekipicture;
+                                                if (j == 0)
+                                                    oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i - 1).ToString() + 3.ToString(), true)[0];
+                                                else
+                                                    oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
                                                 oncekipicture.Image = VarilGetir("003.jpg");
                                                 picture.Image = VarilGetir("003.jpg");
-                                                return;
+                                                kalan = kalan - 3;
+                                               
                                             }
                                             else if (kalan == 3)
                                             {
                                                 picture.Image = VarilGetir("003.jpg");
-                                                return;
+                                                kalan = kalan - 4;
+                                                
+                                            }
+                                            else
+                                            {
+                                                picture.Hide();
                                             }
                                                
                                         }
@@ -314,12 +357,14 @@ namespace Konteyner_Yerlestirme_Programı
                         var pictureSol = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
                         if (j == 2)
                         {
-                            LocationX = LocationX + (pictureSol.Width + 1) + 15;//  picture.Location = new Point((j * (picture.Width + 3) + 19), 10 + (i * (picture.Height + 3)));
+                          // int genislik=(pictureSol.Width==98 && picture.Width==114) ? picture.Width : pictureSol.Width;
+                            LocationX = groupBox1.Width - (LocationX+pictureSol.Width+3);//  picture.Location = new Point((j * (picture.Width + 3) + 19), 10 + (i * (picture.Height + 3)));
                         }
 
                         else //diğerleri 
                         {
-                            LocationX = LocationX + (pictureSol.Width + 1) + 2;  //picture.Location = new Point((j * (picture.Width + 3) + 4), 10 + (i * (picture.Height + 3)));
+                           // int genislik = (pictureSol.Width == 98 && picture.Width == 114) ? picture.Width : pictureSol.Width;
+                            LocationX = LocationX + (pictureSol.Width) + 2;  //picture.Location = new Point((j * (picture.Width + 3) + 4), 10 + (i * (picture.Height + 3)));
                         }
                     }
                     if (Controls.Find("pictureBox" + (i - 1).ToString() + j.ToString(), true).Count() != 0) // yukarıda başka picturebox var ise

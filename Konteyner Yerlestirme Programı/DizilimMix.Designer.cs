@@ -67,6 +67,9 @@
             this.btnDesenkaydet = new System.Windows.Forms.Button();
             this.txtDesenAdi = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.lbl1 = new System.Windows.Forms.Label();
+            this.lbl2 = new System.Windows.Forms.Label();
+            this.checkIBCdikey = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox41)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox40)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox31)).BeginInit();
@@ -432,7 +435,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lbl2);
             this.groupBox1.Controls.Add(this.pictureBox21);
+            this.groupBox1.Controls.Add(this.lbl1);
             this.groupBox1.Controls.Add(this.pictureBox33);
             this.groupBox1.Controls.Add(this.pictureBox43);
             this.groupBox1.Controls.Add(this.pictureBox11);
@@ -494,12 +499,39 @@
             this.label3.TabIndex = 63;
             this.label3.Text = "Desen Adi:";
             // 
+            // lbl1
+            // 
+            this.lbl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl1.Location = new System.Drawing.Point(299, 6);
+            this.lbl1.Name = "lbl1";
+            this.lbl1.Size = new System.Drawing.Size(2, 595);
+            this.lbl1.TabIndex = 64;
+            // 
+            // lbl2
+            // 
+            this.lbl2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl2.Location = new System.Drawing.Point(322, 6);
+            this.lbl2.Name = "lbl2";
+            this.lbl2.Size = new System.Drawing.Size(2, 595);
+            this.lbl2.TabIndex = 65;
+            // 
+            // checkIBCdikey
+            // 
+            this.checkIBCdikey.AutoSize = true;
+            this.checkIBCdikey.Location = new System.Drawing.Point(294, 106);
+            this.checkIBCdikey.Name = "checkIBCdikey";
+            this.checkIBCdikey.Size = new System.Drawing.Size(154, 25);
+            this.checkIBCdikey.TabIndex = 64;
+            this.checkIBCdikey.Text = "IBC dikey başla";
+            this.checkIBCdikey.UseVisualStyleBackColor = true;
+            // 
             // DizilimMix
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1517, 888);
+            this.Controls.Add(this.checkIBCdikey);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtDesenAdi);
             this.Controls.Add(this.btnDesenkaydet);
@@ -591,5 +623,8 @@
         private System.Windows.Forms.Button btnDesenkaydet;
         private System.Windows.Forms.TextBox txtDesenAdi;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lbl2;
+        private System.Windows.Forms.Label lbl1;
+        private System.Windows.Forms.CheckBox checkIBCdikey;
     }
 }
