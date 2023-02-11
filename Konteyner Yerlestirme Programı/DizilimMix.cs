@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Org.BouncyCastle.Asn1.Crmf;
 
 namespace Konteyner_Yerlestirme_Programı
 {
@@ -20,28 +21,54 @@ namespace Konteyner_Yerlestirme_Programı
         }
         List<DolumEkipmanlari> DesenEkipman = new List<DolumEkipmanlari>();
         PictureBox SeciliPicture;
+        List<int>agirliklarList=new List<int>();
+        List<Olculer> olculist = new List<Olculer>();
         private void btnHesapla_Click(object sender, EventArgs e)
         {
             try
             {
-                var Ibcsayi = Convert.ToInt16(txtIbc.Text);
-                var Varilsayi = Convert.ToInt16(txtVaril.Text);
-                var kalanVaril = Varilsayi % 4;
-                var tamdegerVaril = Varilsayi / 4;
-                var DesenList = IbcDizilim1(2, 1, new List<int>());
-                PictureShow();
-                pictureDispos();
-                DizilimYap(false,Ibcsayi, Varilsayi);
+                var Ibcsayi = txtIbc.Text==""?0: Convert.ToInt16(txtIbc.Text);
+                var Varilsayi =txtVaril.Text==""?0: Convert.ToInt16(txtVaril.Text);
+                               
+                    var kalanVaril = Varilsayi % 4;
+                    var tamdegerVaril = Varilsayi / 4;
+                    var DesenList = IbcDizilim1(2, 1, new List<int>());
+                 
+              
+                if (Ibcsayi+tamdegerVaril+kalanVaril>20)                
+                    MessageBox.Show("Yazdığınız değerler konteynıra sığmıyor", "UYARI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                {
+                    PictureShow();
+                    pictureDispos();
+                    olculist.Clear();
+                    DizilimYap(false, Ibcsayi, Varilsayi);
+                    // DizilimYapSirali(false, Ibcsayi, Varilsayi);
+                    int deneme = groupBox1.Height / 2;
+                    lblCizgiX.Location = new Point(groupBox1.Location.X, groupBox1.Location.Y + (groupBox1.Height / 2));
+                    lblCizgiY.Location = new Point(groupBox1.Location.X + (groupBox1.Width / 2) - 5, groupBox1.Location.Y);
 
+                    lblBrut.Text = "Brüt Kilo: " + BrutKiloHesapla().ToString() + " KG";
+                    lblNet.Text = "NET Kilo: " + NetKiloHesapla().ToString() + " KG";
+                    // lblAgirlik.Location = AgirlikMerkeziHesapla();
+                    //lblAgirlik.Parent = pictureBoxG;
+                    pictureBoxG.Paint += pictureBoxG_Paint;
+                    pictureBoxG.Refresh();
+                    
+                }
+               
 
             }
             catch (Exception)
             {
 
-                throw;
+                
             }
           
         }
+
+      
+
         public void pictureDispos()
         {
             for (int i = 0; i < 5; i++)
@@ -128,7 +155,160 @@ namespace Konteyner_Yerlestirme_Programı
 
         }
      
+        struct Olculer
+        {
+            public string Adi;
+           public int LocationX;
+          public  int LocationY;
+           public int LocationOrtaX;
+          public  int LocationOrtaY;
+           public int Width;
+          public  int Height;
+          public  int Agirlik;
+            public string Konum;
+        }
+        struct KonteynirAgirlik
+        {
+            public int UstToplam;
+            public int AltToplam;
+            public int AraToplam;
+            public int SolToplam;
+            public int SagToplam;
+            public int ToplamAgirlik;
+        }
+        Point AgirlikMerkeziHesapla()
+        {
+            var OrtaX= new Point(pictureBoxG.Location.X, pictureBoxG.Location.Y + (pictureBoxG.Height / 2));
+            var OrtaY= new Point(pictureBoxG.Location.X + (pictureBoxG.Width / 2) , pictureBoxG.Location.Y);
+            var Olculer = KonteynirToplamAgirlik();
+            
+            var UstG=new Point(/*pictureBoxG.Location.X+*/(pictureBoxG.Width/2),/*pictureBoxG.Location.Y+*/(pictureBoxG.Height/4));
+            var AltG = new Point(/*pictureBoxG.Location.X + */(pictureBoxG.Width / 2), /*pictureBoxG.Location.Y +*/ (3 * pictureBoxG.Height / 4));
 
+            var SolG = new Point(/*pictureBoxG.Location.X +*/ (pictureBoxG.Width / 4), /*pictureBoxG.Location.Y + */pictureBoxG.Height / 2);
+            var SagG = new Point(/*pictureBoxG.Location.X +*/ (3 * pictureBoxG.Width / 4),/* pictureBoxG.Location.Y +*/ pictureBoxG.Height / 2);
+
+            int toplamcarpilmisX =/* (Olculer.UstToplam * UstG.X) + (Olculer.AltToplam * AltG.X) +*/ (Olculer.SolToplam * SolG.X) + (Olculer.SagToplam * SagG.X);
+            int toplamcarpilmisY = (Olculer.UstToplam * UstG.Y) + (Olculer.AltToplam * AltG.Y);// + (Olculer.SolToplam * SolG.Y) + (Olculer.SagToplam * SagG.Y);
+            return new Point(toplamcarpilmisX/Olculer.ToplamAgirlik,toplamcarpilmisY/Olculer.ToplamAgirlik);
+        }
+        int BrutKiloHesapla()
+        {
+            int toplamkilo = 0;
+            for (int i = 0; i < olculist.Count; i++)
+            {
+                toplamkilo += olculist[i].Agirlik;
+               
+            }
+            return toplamkilo;
+        }
+        int NetKiloHesapla()
+        {
+            int toplamkilo = 0;
+            for (int i = 0; i < olculist.Count; i++)
+            {
+               
+                if (olculist[i].Adi.Substring(0,3)=="IBC")
+                {
+                    toplamkilo += (olculist[i].Agirlik-65);
+                }
+                else
+                {
+                    toplamkilo += (olculist[i].Agirlik-30);
+                }
+               
+
+            }
+            return toplamkilo;
+        }
+       KonteynirAgirlik KonteynirToplamAgirlik()
+        {
+            lblCizgiX.Location = new Point(groupBox1.Location.X, groupBox1.Location.Y + (groupBox1.Height / 2));
+            lblCizgiY.Location = new Point(groupBox1.Location.X + (groupBox1.Width / 2), groupBox1.Location.Y);
+            int LocationX = groupBox1.Location.X + (groupBox1.Width / 2);
+            int LocationY = groupBox1.Location.Y + (groupBox1.Height / 2)-10;
+            int usttoplam = 0;
+            int aratoplam = 0;
+            int alttoplam = 0;
+            int soltoplam = 0;
+            int sagtoplam = 0;
+            int toplamagirlik = 0;
+            
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                 var item= olculist.FirstOrDefault(k => k.Konum == i.ToString() + j.ToString());
+                    if (i<2)                    
+                        usttoplam += item.Agirlik;
+                    
+                    else if (i==2)
+                    aratoplam+=item.Agirlik;
+                    else if (i>2)
+                    alttoplam+=item.Agirlik;
+
+                    if (j%2!=0) //sag kismin kilosu                   
+                        sagtoplam+=item.Agirlik;
+                    
+                    else  // sol kısmın kilosu                   
+                        soltoplam+=item.Agirlik;
+
+                    toplamagirlik += item.Agirlik;
+                }
+            }
+            //for (int i = 0; i < 15; i++) // x ekseni ni hesaplamak için
+            //{
+            //    if (usttoplam > alttoplam + 210)
+            //    {
+            //        alttoplam = alttoplam + 150;
+            //        usttoplam = usttoplam - 150;
+            //        LocationY = LocationY - 6;
+            //    }
+
+            //  else  if (alttoplam > usttoplam + 210)
+            //    {
+            //        usttoplam = usttoplam + 150;
+            //        alttoplam = alttoplam - 150;
+            //        LocationY = LocationY + 6;
+            //    }
+            //    else
+            //        break;
+            //}
+            //for (int i = 0; i < 15; i++)  // y ekseni ni hesaplamak için
+            //{
+            //    if (soltoplam > sagtoplam + 210)
+            //    {
+            //       sagtoplam = sagtoplam + 150;
+            //        soltoplam = soltoplam - 150;
+            //        LocationX = LocationX - 6;
+            //    }
+
+            //   else if (sagtoplam > soltoplam + 210)
+            //    {
+            //        soltoplam = soltoplam + 150;
+            //        sagtoplam = sagtoplam - 150;
+            //        LocationX = LocationX + 6;
+            //    }
+            //    else
+            //        break;
+            //}
+
+            usttoplam = usttoplam + (aratoplam / 2);
+            alttoplam = alttoplam + (aratoplam / 2);
+
+            //int toplamAgirlik = 0;
+            //int toplamcarpilmisAgirlikX = 0;
+            //int toplamcarpilmisAgirlikY = 0;
+            //for (int i = 0; i < olculist.Count; i++)
+            //{
+            //    toplamAgirlik = toplamAgirlik + olculist[i].Agirlik;
+            //    toplamcarpilmisAgirlikX = toplamcarpilmisAgirlikX + (olculist[i].Agirlik * olculist[i].LocationOrtaX);
+            //    toplamcarpilmisAgirlikY = toplamcarpilmisAgirlikY + (olculist[i].Agirlik * olculist[i].LocationOrtaY);
+            //}
+            //   int x = toplamcarpilmisAgirlikX / toplamAgirlik;
+            // int y = toplamcarpilmisAgirlikY / toplamAgirlik;
+            return new KonteynirAgirlik { UstToplam = usttoplam, AltToplam = alttoplam, AraToplam = aratoplam, SolToplam = soltoplam, SagToplam = sagtoplam, ToplamAgirlik = toplamagirlik };
+        }
         private void DizilimMix_Load(object sender, EventArgs e)
         {
             // picture.Size = new Size(114, 114);
@@ -136,22 +316,33 @@ namespace Konteyner_Yerlestirme_Programı
             //    picture.Size = new Size(98, 118);
             //else
             //    picture.Size = new Size(118, 98);
+
+            lblAgirlik.Parent = pictureBoxG;
+            pictureBoxG.Image = new Bitmap(Application.StartupPath + "\\Konteyner Yerleştirme Projesi\\Tasarimlar\\Beyaz.jpg");
             txtVaril.Text=0.ToString();
             txtIbc.Text=0.ToString();
             groupBox1.Size = new Size(489, 595);
             groupBox1.BackColor = Color.White;
+            pictureBoxG.Size = new Size(236, 595);
             lbl1.BackColor = Color.Red;
             lbl1.Width = 3;
+            lbl1.Font=new Font(Label.DefaultFont, FontStyle.Bold);
             lbl1.Height = 596;
             lbl1.Location = new Point(238, 5);
             lbl2.Width = 3;
+            lbl2.Font=new Font(Label.DefaultFont, FontStyle.Bold);
             lbl2.Height = 596;
             lbl2.Location = new Point(246, 5);
             lbl2.BackColor=Color.Red;
-           DizilimYap();
+              DizilimYap();
+         //   DizilimYapSirali();
             PictureDoubleClick();
             SeciliPicture = pictureBox00;
-           
+            checkAgirlik.Checked = true;
+            if (checkAgirlik.Checked == false)
+                lblAgirlik.Hide();
+
+        
           
         }
         void PictureDoubleClick()  //DoubleClick eventi cağırmak
@@ -181,7 +372,7 @@ namespace Konteyner_Yerlestirme_Programı
                 }
             }
         }
-
+       
         private void Picture_Click(object sender, EventArgs e)
         {
             SeciliPicture=(PictureBox)sender;
@@ -210,175 +401,565 @@ namespace Konteyner_Yerlestirme_Programı
             //else { pictureBox01.Tag = Color.Red; }
             //pictureBox01.Refresh();
         }
-
-        void DizilimYap(bool desendengetir= false,int ibcsayi= 20, int varilsayi = 0)
+       
+        void DizilimYapSirali(bool desendengetir = false, int ibcsayi = 20, int varilsayi = 0)
         {
-            int[,] DesenIBCYatay = { {1,2,1,2},{2,1,2,1},{1,2,1,2},{2,1,2,1},{1,2,1,2} };
-            int[,] DesenIBCDikey = { { 2,1,2,1}, { 1,2,1,2 }, { 2,1,2,1 }, { 1,2,1,2 }, { 2,1,2,1} };
+            int[,] DesenIBCYatay = { {1,2,1,2,1 },{2,1,2,1,2 },{1,2,1,2,1 },{2,1,2,1,2 } };
+            int[,] DesenIBCDikey = { { 2, 1, 2, 1 }, { 1, 2, 1, 2 }, { 2, 1, 2, 1 }, { 1, 2, 1, 2 }, { 2, 1, 2, 1 } };
 
-            int LocationY = 10;
+          //  checkIBCdikey.Checked = true;
+            int LocationX = 4;
             int ibcsayaci = 0;
             int varilsayaci = 0;
             var kalan = varilsayi % 4;
             var tamdeger = varilsayi / 4;
-            for (int i = 0; i < 5; i++) // satir
-            {
-                int LocationX = 4;
-              
-                for (int j = 0; j < 4; j++) //sutun
-                {
-                    var picture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + j.ToString(), true)[0];
-                   
+            int kalanvarmi = kalan == 0 ? 0 : 1;
+            agirliklarList.Clear();
 
-                    if (desendengetir)
+            for (int i = 0; i < 4; i++) //sutunlar
+            {
+                int LocationY = 10;
+
+                for (int j = 0; j <5; j++) // satirlar
+                {
+                    var picture = (PictureBox)Controls.Find("pictureBox" + j.ToString() + i.ToString(), true)[0];
+                    if (ibcsayi != ibcsayaci)
                     {
-                        foreach (var item in DesenEkipman)
+                        int[,] Desendizi = checkIBCdikey.Checked == true ? DesenIBCDikey : DesenIBCYatay;
+                        if (Desendizi[i, j] == 2)
                         {
-                            if (item.Konum == i.ToString() + j.ToString())
-                            {
-                                picture.Size = new Size(item.Genislik, item.Yukseklik);
-                                picture.Image = item.Gorsel;
-                                picture.Tag = false;
-                                break;
-                            }
+                            picture.Size = new Size(98, 118);
+                            picture.Image = IbcGetir("2.jpg");
+                            olculist.Add(new Olculer { Adi = "IBCDikey", Agirlik = 1000, Width = 98, Height = 118, Konum = i.ToString() + j.ToString() });
+                            agirliklarList.Add(1000);
+                            ibcsayaci++;
+                        }
+                        else
+                        {
+                            picture.Size = new Size(118, 98);
+                            picture.Image = IbcGetir("1.jpg");
+                            olculist.Add(new Olculer { Adi = "IBCYatay", Agirlik = 1000, Width = 118, Height = 98, Konum = i.ToString() + j.ToString() });
+                            agirliklarList.Add(1000);
+                            ibcsayaci++;
                         }
                     }
                     else
                     {
-                        if (ibcsayi != ibcsayaci)
+                        if (tamdeger != varilsayaci)
                         {
-                            int[,] Desendizi = checkIBCdikey.Checked == true ? DesenIBCDikey : DesenIBCYatay;
-                            if (Desendizi[i, j] == 2)
-                            {
-                                picture.Size = new Size(98, 118);
-                                picture.Image = IbcGetir("2.jpg");
-                                ibcsayaci++;
-                            }
-                            else
-                            {
-                                picture.Size = new Size(118, 98);
-                                picture.Image = IbcGetir("1.jpg");
-                                ibcsayaci++;
-                            }
+                            picture.Size = new Size(114, 114);
+                            picture.Image = VarilGetir("004.jpg");
+                            olculist.Add(new Olculer { Adi = "Palet4", Agirlik = 640, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                            agirliklarList.Add(640);
+                            varilsayaci++;
                         }
                         else
                         {
-                            if (tamdeger!=varilsayaci)
+                            if (kalan != 0)
                             {
-                                picture.Size = new Size(114, 114);
-                                picture.Image = VarilGetir("004.jpg");
-                                varilsayaci++;
-                            }
-                            else
-                            {
-                                if (kalan != 0)
+                                if (kalan != 4)
                                 {
-                                    if (kalan != 4)
+                                    if (tamdeger == 0)
                                     {
-                                        if (tamdeger == 0)
+                                        picture.Size = new Size(114, 114);
+                                        if (kalan == 1)
                                         {
-                                            picture.Size = new Size(114, 114);
-                                            if (kalan == 1)
-                                            {
-                                                picture.Image = VarilGetir("001.jpg");
-                                                kalan=kalan-2;
-                                              
-                                            }
-                                                
-                                            else if (kalan == 2)
-                                            {
-                                                picture.Image = VarilGetir("002.jpg");
-                                                kalan = kalan-3;
-                                                
-                                            }
-                                               
-                                            else if (kalan == 3)
-                                            {
-                                                picture.Image = VarilGetir("003.jpg");
-                                                kalan = kalan - 4;
-                                                
-                                            }
-                                            else
-                                            {
-                                                picture.Hide();
-                                            }
-                                               
+                                            picture.Image = VarilGetir("001.jpg");
+                                            agirliklarList.Add(160);
+                                            olculist.Add(new Olculer { Adi = "Palet1", Agirlik = 160, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                            kalan = kalan - 2;
+
+                                        }
+
+                                        else if (kalan == 2)
+                                        {
+                                            picture.Image = VarilGetir("002.jpg");
+                                            agirliklarList.Add(320);
+                                            olculist.Add(new Olculer { Adi = "Palet2", Agirlik = 320, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                            kalan = kalan - 3;
+
+                                        }
+
+                                        else if (kalan == 3)
+                                        {
+                                            picture.Image = VarilGetir("003.jpg");
+                                            agirliklarList.Add(480);
+                                            olculist.Add(new Olculer { Adi = "Palet3", Agirlik = 480, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                            kalan = kalan - 4;
+
                                         }
                                         else
                                         {
-                                           
-                                            picture.Size = new Size(114, 114);
-                                            if (kalan == 1)
-                                            {
-                                                PictureBox oncekipicture;
-                                                if(j==0)
-                                               oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i-1).ToString() + 3.ToString(), true)[0];
-                                                else
-                                                    oncekipicture= (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j-1).ToString(), true)[0];
-                                                picture.Image = VarilGetir("002.jpg");
-                                                oncekipicture.Image = VarilGetir("003.jpg");
-                                                kalan = kalan - 2;
-                                            }
-                                            else if (kalan == 2)
-                                            {
-                                                PictureBox oncekipicture;
-                                                if (j == 0)
-                                                    oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i - 1).ToString() + 3.ToString(), true)[0];
-                                                else
-                                                    oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
-                                                oncekipicture.Image = VarilGetir("003.jpg");
-                                                picture.Image = VarilGetir("003.jpg");
-                                                kalan = kalan - 3;
-                                               
-                                            }
-                                            else if (kalan == 3)
-                                            {
-                                                picture.Image = VarilGetir("003.jpg");
-                                                kalan = kalan - 4;
-                                                
-                                            }
-                                            else
-                                            {
-                                                picture.Hide();
-                                            }
-                                               
+                                            picture.Hide();
                                         }
 
                                     }
+                                    else
+                                    {
+
+                                        picture.Size = new Size(114, 114);
+                                        if (kalan == 1)
+                                        {
+                                            PictureBox oncekipicture;
+                                            if (j == 0)
+                                                oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i - 1).ToString() + 3.ToString(), true)[0];
+                                            else
+                                                oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
+                                            picture.Image = VarilGetir("002.jpg");
+
+                                            olculist[olculist.Count - 1] = new Olculer { Adi = "Palet3", Agirlik = 480, Width = 114, Height = 114, Konum = olculist[olculist.Count - 1].Konum };
+                                            olculist.Add(new Olculer { Adi = "Palet2", Agirlik = 320, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                            agirliklarList[agirliklarList.Count - 1] = 480;
+                                            agirliklarList.Add(320);
+                                            oncekipicture.Image = VarilGetir("003.jpg");
+                                            kalan = kalan - 2;
+                                        }
+                                        else if (kalan == 2)
+                                        {
+                                            PictureBox oncekipicture;
+                                            if (j == 0)
+                                                oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i - 1).ToString() + 3.ToString(), true)[0];
+                                            else
+                                                oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
+                                            oncekipicture.Image = VarilGetir("003.jpg");
+                                            agirliklarList[agirliklarList.Count - 1] = 480;
+                                            agirliklarList.Add(480);
+                                            picture.Image = VarilGetir("003.jpg");
+                                            kalan = kalan - 3;
+
+                                        }
+                                        else if (kalan == 3)
+                                        {
+                                            picture.Image = VarilGetir("003.jpg");
+                                            olculist.Add(new Olculer { Adi = "Palet3", Agirlik = 480, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                            agirliklarList.Add(480);
+                                            kalan = kalan - 4;
+
+                                        }
+                                        else
+                                        {
+                                            picture.Hide();
+                                        }
+
+                                    }
+
                                 }
                             }
-                          
-                        }
-                      
-                    }
-
-                    if (Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true).Count() != 0) // solda başka picturebox var ise
-                    {
-                        var pictureSol = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
-                        if (j == 2)
-                        {
-                          // int genislik=(pictureSol.Width==98 && picture.Width==114) ? picture.Width : pictureSol.Width;
-                            LocationX = groupBox1.Width - (LocationX+pictureSol.Width+3);//  picture.Location = new Point((j * (picture.Width + 3) + 19), 10 + (i * (picture.Height + 3)));
                         }
 
-                        else //diğerleri 
-                        {
-                           // int genislik = (pictureSol.Width == 98 && picture.Width == 114) ? picture.Width : pictureSol.Width;
-                            LocationX = LocationX + (pictureSol.Width) + 2;  //picture.Location = new Point((j * (picture.Width + 3) + 4), 10 + (i * (picture.Height + 3)));
-                        }
                     }
-                    if (Controls.Find("pictureBox" + (i - 1).ToString() + j.ToString(), true).Count() != 0) // yukarıda başka picturebox var ise
+
+                    //  var picture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + j.ToString(), true)[0];
+                    //var pictureSol = (PictureBox)Controls.Find("pictureBox" + (i-1).ToString() + j .ToString(), true)[0];
+                    if (i == 2)
+                        {
+                            // int genislik=(pictureSol.Width==98 && picture.Width==114) ? picture.Width : pictureSol.Width;
+                            LocationX = 253; //groupBox1.Width - (LocationX+pictureSol.Width+3);//  picture.Location = new Point((j * (picture.Width + 3) + 19), 10 + (i * (picture.Height + 3)));
+                        }
+                        else if (i == 1)
+                            LocationX = 238 - (picture.Width + 2);
+                        else if (i == 3)
+                        {
+                                    LocationX = groupBox1.Width - picture.Width - 2;
+                                    
+                           // LocationX = LocationX + (pictureSol.Width) + 5; 
+                        }
+                    
+                    if (Controls.Find("pictureBox" + i .ToString() + (j-1).ToString(), true).Count() != 0) // yukarıda başka picturebox var ise
                     {
 
                         LocationY = 10;
-                        for (int k = 0; k < i; k++)
+                        for (int k = 0; k < j; k++)
                         {
-                            var ustteki = (PictureBox)Controls.Find("pictureBox" + k.ToString() + j.ToString(), true)[0];
+                            var ustteki = (PictureBox)Controls.Find("pictureBox" + k.ToString() + i.ToString(), true)[0];
                             LocationY += ustteki.Height + 2;
                         }
                     }
                     picture.Location = new Point(LocationX, LocationY);
+                }           
+            }
+        }
+        void DizilimYap(bool desendengetir= false,int ibcsayi= 20, int varilsayi = 0)
+        {
+            int[,] DesenIBCYatay = { {1,2,1,2},{2,1,2,1},{1,2,1,2},{2,1,2,1},{1,2,1,2} };
+            int[,] DesenIBCDikey = { { 2,1,2,1}, { 1,2,1,2 }, { 2,1,2,1 }, { 1,2,1,2 }, { 2,1,2,1} };
+           
+            int LocationY = 10;
+            int LocationX = 4;
+            int ibcsayaci = 0;
+            int varilsayaci = 0;
+            var kalan = varilsayi % 4;
+            var tamdeger = varilsayi / 4;
+            int kalanvarmi = kalan == 0 ? 0 : 1;
+            bool Bittimi = false;
+            bool girdi = false;
+            agirliklarList.Clear();
+            //  olculist.Clear();
+            for (int c = 0; c < 2; c++)
+            {
+             
+
+                for (int i = 0; i < 5; i++) // satir
+                {
+                     LocationX = 4;
+
+                    for (int j = 0; j < 4; j++) //sutun
+                    {
+
+
+                        var picture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + j.ToString(), true)[0];
+                       
+                        if (desendengetir)
+                        {
+                            // var picture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + j.ToString(), true)[0];
+                            foreach (var item in DesenEkipman)
+                            {
+                                if (item.Konum == i.ToString() + j.ToString())
+                                {
+
+                                    picture.Size = new Size(item.Genislik, item.Yukseklik);
+                                    picture.Image = item.Gorsel;
+                                    agirliklarList.Add(item.agirlik);
+
+                                    olculist[olculist.FindIndex(k => k.Konum == i.ToString() + j.ToString())] = new Olculer { Adi = item.Adi, Agirlik = item.agirlik, Height = item.Yukseklik, Width = item.Genislik, LocationX = item.X, LocationY = item.Y, Konum = item.Konum };
+                                    picture.Tag = false;
+                                    break;
+                                }
+                            }
+                        }
+                       
+                        else if ((ibcsayi + tamdeger + kalanvarmi) > 17 && c==0) //ıbc ve varil sayısı 1 katın alabileceğinden fazla ise
+                        {
+                            //  var picture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + j.ToString(), true)[0];
+                            girdi = true;
+                            if (ibcsayi != ibcsayaci)
+                            {
+                                int[,] Desendizi = checkIBCdikey.Checked == true ? DesenIBCDikey : DesenIBCYatay;
+                                if (!(i == 4 && j > 1))
+                                {
+
+                                    if (Desendizi[i, j] == 2)
+                                    {
+                                        picture.Size = new Size(98, 118);
+                                        picture.Image = IbcGetir("2.jpg");
+                                        olculist.Add(new Olculer { Adi = "IBCDikey", Agirlik = 1165, Width = 98, Height = 118, Konum = i.ToString() + j.ToString() });
+                                        agirliklarList.Add(1165);
+                                        ibcsayaci++;
+
+                                    }
+                                    else
+                                    {
+                                        picture.Size = new Size(118, 98);
+                                        picture.Image = IbcGetir("1.jpg");
+                                        olculist.Add(new Olculer { Adi = "IBCYatay", Agirlik = 1165, Width = 118, Height = 98, Konum = i.ToString() + j.ToString() });
+                                        agirliklarList.Add(1165);
+                                        ibcsayaci++;
+
+                                    }
+                               
+                                }
+                                else
+                                ibcsayaci++;
+
+                                
+                            }
+                            else
+                            {
+                                if (tamdeger != varilsayaci)
+                                {
+                                    picture.Size = new Size(114, 114);
+                                    picture.Image = VarilGetir("004.jpg");
+                                    olculist.Add(new Olculer { Adi = "Palet4", Agirlik = 1018, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                    agirliklarList.Add(1018);
+                                    varilsayaci++;
+                                }
+                                else
+                                {
+                                    if (kalan != 0)
+                                    {
+                                        if (kalan != 4)
+                                        {
+                                            if (tamdeger == 0)
+                                            {
+                                                picture.Size = new Size(114, 114);
+                                                if (kalan == 1)
+                                                {
+                                                    picture.Image = VarilGetir("001.jpg");
+                                                    agirliklarList.Add(160);
+                                                    olculist.Add(new Olculer { Adi = "Palet1", Agirlik = 277, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                    kalan = kalan - 2;
+
+                                                }
+
+                                                else if (kalan == 2)
+                                                {
+                                                    picture.Image = VarilGetir("002.jpg");
+                                                    agirliklarList.Add(320);
+                                                    olculist.Add(new Olculer { Adi = "Palet2", Agirlik = 524, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                    kalan = kalan - 3;
+
+                                                }
+
+                                                else if (kalan == 3)
+                                                {
+                                                    picture.Image = VarilGetir("003.jpg");
+                                                    agirliklarList.Add(480);
+                                                    olculist.Add(new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                    kalan = kalan - 4;
+
+                                                }
+                                                else
+                                                {
+                                                    picture.Hide();
+                                                }
+
+                                            }
+                                            else
+                                            {
+
+                                                picture.Size = new Size(114, 114);
+                                                if (kalan == 1)
+                                                {
+                                                    PictureBox oncekipicture;
+                                                    if (j == 0)
+                                                        oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i - 1).ToString() + 3.ToString(), true)[0];
+                                                    else
+                                                        oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
+                                                    picture.Image = VarilGetir("002.jpg");
+
+                                                    olculist[olculist.Count - 1] = new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = olculist[olculist.Count - 1].Konum };
+                                                    olculist.Add(new Olculer { Adi = "Palet2", Agirlik = 524, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                    agirliklarList[agirliklarList.Count - 1] = 480;
+                                                    agirliklarList.Add(320);
+                                                    oncekipicture.Image = VarilGetir("003.jpg");
+                                                    kalan = kalan - 2;
+                                                }
+                                                else if (kalan == 2)
+                                                {
+                                                    PictureBox oncekipicture;
+                                                    if (j == 0)
+                                                        oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i - 1).ToString() + 3.ToString(), true)[0];
+                                                    else
+                                                        oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
+                                                    oncekipicture.Image = VarilGetir("003.jpg");
+
+                                                    olculist[olculist.Count - 1] = new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = olculist[olculist.Count - 1].Konum };
+                                                    olculist.Add(new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+
+                                                    agirliklarList[agirliklarList.Count - 1] = 480;
+                                                    agirliklarList.Add(480);
+                                                    picture.Image = VarilGetir("003.jpg");
+                                                    kalan = kalan - 3;
+
+                                                }
+                                                else if (kalan == 3)
+                                                {
+                                                    picture.Image = VarilGetir("003.jpg");
+                                                    olculist.Add(new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                    agirliklarList.Add(480);
+                                                    kalan = kalan - 4;
+
+                                                }
+                                                else
+                                                {
+                                                    picture.Hide();
+                                                }
+
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                            }
+                           
+                        }
+                        else if(!girdi)// ıbc ve varil sayısı 1 katı doldurmuycak kadar az ise
+                        {   bool ifade=false;
+                            if(c==0 &&j<2)
+                                ifade = true;
+                            else if(c==1 && j>=2)
+                                ifade = true;
+                            if (ifade)
+                            {
+
+                                if (ibcsayi != ibcsayaci)
+                                {
+
+                                    int[,] Desendizi = checkIBCdikey.Checked == true ? DesenIBCDikey : DesenIBCYatay;
+                                    if (Desendizi[i, j] == 2)
+                                    {
+                                        picture.Size = new Size(98, 118);
+                                        picture.Image = IbcGetir("2.jpg");
+                                        olculist.Add(new Olculer { Adi = "IBCDikey", Agirlik = 1165, Width = 98, Height = 118, Konum = i.ToString() + j.ToString() });
+                                        agirliklarList.Add(1000);
+                                        ibcsayaci++;
+                                    }
+                                    else
+                                    {
+                                        picture.Size = new Size(118, 98);
+                                        picture.Image = IbcGetir("1.jpg");
+                                        olculist.Add(new Olculer { Adi = "IBCYatay", Agirlik = 1165, Width = 118, Height = 98, Konum = i.ToString() + j.ToString() });
+                                        agirliklarList.Add(1000);
+                                        ibcsayaci++;
+                                    }
+                                }
+                                else
+                                {
+                                    if (tamdeger != varilsayaci)
+                                    {
+                                        picture.Size = new Size(114, 114);
+                                        picture.Image = VarilGetir("004.jpg");
+                                        olculist.Add(new Olculer { Adi = "Palet4", Agirlik = 1018, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                        agirliklarList.Add(640);
+                                        varilsayaci++;
+                                    }
+                                    else
+                                    {
+                                        if (kalan != 0)
+                                        {
+                                            if (kalan != 4)
+                                            {
+                                                if (tamdeger == 0)
+                                                {
+                                                    picture.Size = new Size(114, 114);
+                                                    if (kalan == 1)
+                                                    {
+                                                        picture.Image = VarilGetir("001.jpg");
+                                                        olculist.Add(new Olculer { Adi = "Palet1", Agirlik = 277, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                        agirliklarList.Add(160);
+                                                        kalan = kalan - 2;
+
+                                                    }
+
+                                                    else if (kalan == 2)
+                                                    {
+                                                        picture.Image = VarilGetir("002.jpg");
+                                                        olculist.Add(new Olculer { Adi = "Palet2", Agirlik = 524, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                        agirliklarList.Add(320);
+                                                        kalan = kalan - 3;
+
+                                                    }
+
+                                                    else if (kalan == 3)
+                                                    {
+                                                        picture.Image = VarilGetir("003.jpg");
+                                                        olculist.Add(new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                        agirliklarList.Add(480);
+                                                        kalan = kalan - 4;
+
+                                                    }
+                                                    else
+                                                    {
+                                                       // picture.Hide();
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    
+                                                    picture.Size = new Size(114, 114);
+                                                    if (kalan == 1)
+                                                    {
+                                                        PictureBox oncekipicture;
+                                                        if (j == 0)
+                                                            oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i - 1).ToString() + 1.ToString(), true)[0];
+                                                        else if (j == 2&&i==0)
+                                                            oncekipicture = (PictureBox)Controls.Find("pictureBox" + (4-i).ToString() + (j - 1).ToString(), true)[0];
+                                                        else if (j == 2 && i != 0)
+                                                            oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i-1).ToString() + (j+1).ToString(), true)[0];
+                                                        else
+                                                            oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
+                                                        picture.Image = VarilGetir("002.jpg");
+
+                                                        olculist[olculist.Count - 1] = new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = olculist[olculist.Count - 1].Konum };
+                                                        olculist.Add(new Olculer { Adi = "Palet2", Agirlik = 524, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                        agirliklarList[agirliklarList.Count - 1] = 480;
+                                                        agirliklarList.Add(320);
+                                                        oncekipicture.Image = VarilGetir("003.jpg");
+                                                        kalan = kalan - 2;
+                                                    }
+                                                    else if (kalan == 2)
+                                                    {
+                                                        PictureBox oncekipicture;
+                                                        if (j == 0)
+                                                            oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i - 1).ToString() + (1).ToString(), true)[0];
+                                                        else if (j == 2 && i != 0)
+                                                            oncekipicture = (PictureBox)Controls.Find("pictureBox" + (i-1).ToString() + (j+1).ToString(), true)[0];
+                                                        else if(j==2 && i==0)
+                                                            oncekipicture = (PictureBox)Controls.Find("pictureBox" + (4 - i).ToString() + (j-1).ToString(), true)[0];
+                                                        else
+                                                            oncekipicture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
+                                                        oncekipicture.Image = VarilGetir("003.jpg");
+
+                                                        olculist[olculist.Count - 1] = new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = olculist[olculist.Count - 1].Konum };
+                                                        olculist.Add(new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                        agirliklarList[agirliklarList.Count - 1] = 480;
+                                                        agirliklarList.Add(480);
+                                                        picture.Image = VarilGetir("003.jpg");
+                                                        kalan = kalan - 3;
+
+                                                    }
+                                                    else if (kalan == 3)
+                                                    {
+                                                        picture.Image = VarilGetir("003.jpg");
+                                                        olculist.Add(new Olculer { Adi = "Palet3", Agirlik = 771, Width = 114, Height = 114, Konum = i.ToString() + j.ToString() });
+                                                        agirliklarList.Add(480);
+                                                        kalan = kalan - 4;
+
+                                                    }
+                                                    else
+                                                    {
+                                                        picture.Hide();
+                                                    }
+
+                                                }
+
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+
+                        }
+                        if (Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true).Count() != 0) // solda başka picturebox var ise
+                        {
+                            //  var picture = (PictureBox)Controls.Find("pictureBox" + i.ToString() + j.ToString(), true)[0];
+                            var pictureSol = (PictureBox)Controls.Find("pictureBox" + i.ToString() + (j - 1).ToString(), true)[0];
+                            if (j == 2)
+                            {
+                                // int genislik=(pictureSol.Width==98 && picture.Width==114) ? picture.Width : pictureSol.Width;
+                                LocationX = 253; //groupBox1.Width - (LocationX+pictureSol.Width+3);//  picture.Location = new Point((j * (picture.Width + 3) + 19), 10 + (i * (picture.Height + 3)));
+                            }
+                            else if (j == 3)
+                                LocationX = groupBox1.Width - picture.Width - 2;
+                            else if (j == 1)
+                            {
+
+                                LocationX = 238 - (picture.Width + 2);
+
+                                // LocationX = LocationX + (pictureSol.Width) + 5; 
+                            }
+                        }
+                        if (Controls.Find("pictureBox" + (i - 1).ToString() + j.ToString(), true).Count() != 0) // yukarıda başka picturebox var ise
+                        {
+
+                            LocationY = 10;
+                            for (int l = 0; l < i; l++)
+                            {
+                                var ustteki = (PictureBox)Controls.Find("pictureBox" + l.ToString() + j.ToString(), true)[0];
+                                LocationY += ustteki.Height + 2;
+                            }
+                        }
+                        picture.Location = new Point(LocationX, LocationY);
+                       
+                    }
                 }
+                LocationX = 4;
+                LocationY = 10;
             }
             
         }
@@ -416,6 +997,13 @@ namespace Konteyner_Yerlestirme_Programı
             //pictureBox1.Image = bm;
             DizilimYap(true);
             DesenEkipman.Clear();
+            lblBrut.Text = "Brüt Kilo: " + BrutKiloHesapla().ToString() + " KG";
+            lblNet.Text = "NET Kilo: " + NetKiloHesapla().ToString() + " KG";
+            pictureBoxG.Paint += pictureBoxG_Paint;
+            pictureBoxG.Refresh();
+
+
+
 
         }
         int sayac = 0;
@@ -478,6 +1066,39 @@ namespace Konteyner_Yerlestirme_Programı
                     picture.Location = new Point(picture.Location.X, Y);
                 }
             }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                var Secili = SeciliPictureboxlar();
+                try
+                {
+                    for (int i = 0; i < Secili.Count(); i++)
+                    {
+                        var picture = (PictureBox)Controls.Find(Secili[i].Name, true)[0];
+                        
+                        olculist.Remove(olculist[olculist.FindIndex(k => k.Konum == picture.Name.ToString().Substring(10))]);
+                        picture.Hide();
+                    }
+                    lblBrut.Text = "Brüt Kilo: " + BrutKiloHesapla().ToString() + " KG";
+                    lblNet.Text = "NET Kilo: " + NetKiloHesapla().ToString() + " KG";
+                }
+                catch (Exception)
+                {
+
+                    for (int i = 0; i < Secili.Count(); i++)
+                    {
+                        var picture = (PictureBox)Controls.Find(Secili[i].Name, true)[0];
+                     
+                        picture.Hide();
+                    }
+                    lblBrut.Text = "Brüt Kilo: " + BrutKiloHesapla().ToString() + " KG";
+                    lblNet.Text = "NET Kilo: " + NetKiloHesapla().ToString() + " KG";
+                }
+               
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                btnHesapla.PerformClick();
+            }
         }
 
         private void DizilimMix_Click(object sender, EventArgs e)
@@ -510,6 +1131,39 @@ namespace Konteyner_Yerlestirme_Programı
             else
                 MessageBox.Show("Desen Adi Boş Olamaz");
           
+        }
+
+        private void DizilimMix_MouseMove(object sender, MouseEventArgs e)
+        {
+            Text = e.X.ToString() + " Y: " + e.Y;
+        }
+
+        private void checkAgirlik_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkAgirlik.Checked)
+            {
+                pictureBoxG.Show();
+            }
+            else
+            {
+                pictureBoxG.Hide();
+            }
+        }
+
+        private void pictureBoxG_Paint(object sender, PaintEventArgs e)
+        {
+          //  e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            var konum = AgirlikMerkeziHesapla();
+
+           e.Graphics.FillEllipse(new SolidBrush(Color.Red), konum.X-8,konum.Y-8 ,15, 15);
+            e.Graphics.DrawLine(new Pen(Color.Blue, 3.0f), 0, (596 / 2) - 149, 250, (596 / 2) - 149);
+            e.Graphics.DrawLine(new Pen(Color.Blue, 3.0f), 0, (596 / 2) +74, 250, (596 / 2) +74);
+            // e.Graphics.DrawEllipse(new Pen(Color.Red,2f),100,100,5,5);
+        }
+
+        private void DizilimMix_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

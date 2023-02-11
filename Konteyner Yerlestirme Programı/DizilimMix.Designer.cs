@@ -63,13 +63,20 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnDesenHizala = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lbl2 = new System.Windows.Forms.Label();
+            this.lbl1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnDesenkaydet = new System.Windows.Forms.Button();
             this.txtDesenAdi = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.lbl1 = new System.Windows.Forms.Label();
-            this.lbl2 = new System.Windows.Forms.Label();
             this.checkIBCdikey = new System.Windows.Forms.CheckBox();
+            this.lblAgirlik = new System.Windows.Forms.Label();
+            this.checkAgirlik = new System.Windows.Forms.CheckBox();
+            this.lblCizgiX = new System.Windows.Forms.Label();
+            this.lblCizgiY = new System.Windows.Forms.Label();
+            this.pictureBoxG = new System.Windows.Forms.PictureBox();
+            this.lblBrut = new System.Windows.Forms.Label();
+            this.lblNet = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox41)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox40)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox31)).BeginInit();
@@ -95,6 +102,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxx24)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxG)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox41
@@ -382,7 +390,7 @@
             // pictureboxx25
             // 
             this.pictureboxx25.Image = ((System.Drawing.Image)(resources.GetObject("pictureboxx25.Image")));
-            this.pictureboxx25.Location = new System.Drawing.Point(431, 145);
+            this.pictureboxx25.Location = new System.Drawing.Point(466, 145);
             this.pictureboxx25.Margin = new System.Windows.Forms.Padding(4);
             this.pictureboxx25.Name = "pictureboxx25";
             this.pictureboxx25.Size = new System.Drawing.Size(35, 33);
@@ -405,7 +413,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label5.Location = new System.Drawing.Point(365, 153);
+            this.label5.Location = new System.Drawing.Point(400, 153);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(59, 20);
@@ -425,7 +433,7 @@
             // 
             // btnDesenHizala
             // 
-            this.btnDesenHizala.Location = new System.Drawing.Point(487, 129);
+            this.btnDesenHizala.Location = new System.Drawing.Point(515, 129);
             this.btnDesenHizala.Name = "btnDesenHizala";
             this.btnDesenHizala.Size = new System.Drawing.Size(114, 73);
             this.btnDesenHizala.TabIndex = 58;
@@ -464,11 +472,27 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "20DCTABAN";
             // 
+            // lbl2
+            // 
+            this.lbl2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl2.Location = new System.Drawing.Point(322, 6);
+            this.lbl2.Name = "lbl2";
+            this.lbl2.Size = new System.Drawing.Size(2, 595);
+            this.lbl2.TabIndex = 65;
+            // 
+            // lbl1
+            // 
+            this.lbl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl1.Location = new System.Drawing.Point(299, 6);
+            this.lbl1.Name = "lbl1";
+            this.lbl1.Size = new System.Drawing.Size(2, 595);
+            this.lbl1.TabIndex = 64;
+            // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(845, 60);
+            this.pictureBox1.Location = new System.Drawing.Point(1106, 130);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(553, 775);
+            this.pictureBox1.Size = new System.Drawing.Size(328, 687);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 60;
             this.pictureBox1.TabStop = false;
@@ -499,31 +523,87 @@
             this.label3.TabIndex = 63;
             this.label3.Text = "Desen Adi:";
             // 
-            // lbl1
-            // 
-            this.lbl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl1.Location = new System.Drawing.Point(299, 6);
-            this.lbl1.Name = "lbl1";
-            this.lbl1.Size = new System.Drawing.Size(2, 595);
-            this.lbl1.TabIndex = 64;
-            // 
-            // lbl2
-            // 
-            this.lbl2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl2.Location = new System.Drawing.Point(322, 6);
-            this.lbl2.Name = "lbl2";
-            this.lbl2.Size = new System.Drawing.Size(2, 595);
-            this.lbl2.TabIndex = 65;
-            // 
             // checkIBCdikey
             // 
             this.checkIBCdikey.AutoSize = true;
-            this.checkIBCdikey.Location = new System.Drawing.Point(294, 106);
+            this.checkIBCdikey.Location = new System.Drawing.Point(255, 103);
             this.checkIBCdikey.Name = "checkIBCdikey";
-            this.checkIBCdikey.Size = new System.Drawing.Size(154, 25);
+            this.checkIBCdikey.Size = new System.Drawing.Size(123, 20);
             this.checkIBCdikey.TabIndex = 64;
             this.checkIBCdikey.Text = "IBC dikey başla";
             this.checkIBCdikey.UseVisualStyleBackColor = true;
+            // 
+            // lblAgirlik
+            // 
+            this.lblAgirlik.AutoSize = true;
+            this.lblAgirlik.BackColor = System.Drawing.SystemColors.Info;
+            this.lblAgirlik.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblAgirlik.ForeColor = System.Drawing.Color.Red;
+            this.lblAgirlik.Location = new System.Drawing.Point(796, 129);
+            this.lblAgirlik.Name = "lblAgirlik";
+            this.lblAgirlik.Size = new System.Drawing.Size(39, 36);
+            this.lblAgirlik.TabIndex = 65;
+            this.lblAgirlik.Text = "G";
+            // 
+            // checkAgirlik
+            // 
+            this.checkAgirlik.AutoSize = true;
+            this.checkAgirlik.Location = new System.Drawing.Point(255, 129);
+            this.checkAgirlik.Name = "checkAgirlik";
+            this.checkAgirlik.Size = new System.Drawing.Size(169, 20);
+            this.checkAgirlik.TabIndex = 66;
+            this.checkAgirlik.Text = "Ağırlık Merkezini Göster";
+            this.checkAgirlik.UseVisualStyleBackColor = true;
+            this.checkAgirlik.CheckedChanged += new System.EventHandler(this.checkAgirlik_CheckedChanged);
+            // 
+            // lblCizgiX
+            // 
+            this.lblCizgiX.BackColor = System.Drawing.Color.ForestGreen;
+            this.lblCizgiX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCizgiX.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblCizgiX.Location = new System.Drawing.Point(672, 170);
+            this.lblCizgiX.Name = "lblCizgiX";
+            this.lblCizgiX.Size = new System.Drawing.Size(813, 5);
+            this.lblCizgiX.TabIndex = 67;
+            // 
+            // lblCizgiY
+            // 
+            this.lblCizgiY.BackColor = System.Drawing.Color.Gold;
+            this.lblCizgiY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCizgiY.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblCizgiY.Location = new System.Drawing.Point(754, 145);
+            this.lblCizgiY.Name = "lblCizgiY";
+            this.lblCizgiY.Size = new System.Drawing.Size(5, 1094);
+            this.lblCizgiY.TabIndex = 68;
+            // 
+            // pictureBoxG
+            // 
+            this.pictureBoxG.Location = new System.Drawing.Point(707, 208);
+            this.pictureBoxG.Name = "pictureBoxG";
+            this.pictureBoxG.Size = new System.Drawing.Size(371, 609);
+            this.pictureBoxG.TabIndex = 69;
+            this.pictureBoxG.TabStop = false;
+            this.pictureBoxG.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxG_Paint);
+            // 
+            // lblBrut
+            // 
+            this.lblBrut.AutoSize = true;
+            this.lblBrut.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblBrut.Location = new System.Drawing.Point(740, 31);
+            this.lblBrut.Name = "lblBrut";
+            this.lblBrut.Size = new System.Drawing.Size(116, 29);
+            this.lblBrut.TabIndex = 70;
+            this.lblBrut.Text = "Brüt Kilo:";
+            // 
+            // lblNet
+            // 
+            this.lblNet.AutoSize = true;
+            this.lblNet.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblNet.Location = new System.Drawing.Point(740, 77);
+            this.lblNet.Name = "lblNet";
+            this.lblNet.Size = new System.Drawing.Size(109, 29);
+            this.lblNet.TabIndex = 71;
+            this.lblNet.Text = "Net Kilo:";
             // 
             // DizilimMix
             // 
@@ -531,6 +611,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1517, 888);
+            this.Controls.Add(this.lblNet);
+            this.Controls.Add(this.lblBrut);
+            this.Controls.Add(this.pictureBoxG);
+            this.Controls.Add(this.lblCizgiY);
+            this.Controls.Add(this.lblCizgiX);
+            this.Controls.Add(this.checkAgirlik);
+            this.Controls.Add(this.lblAgirlik);
             this.Controls.Add(this.checkIBCdikey);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtDesenAdi);
@@ -553,7 +640,9 @@
             this.Text = "DizilimMix";
             this.Load += new System.EventHandler(this.DizilimMix_Load);
             this.Click += new System.EventHandler(this.DizilimMix_Click);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.DizilimMix_Paint);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DizilimMix_KeyUp);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DizilimMix_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox41)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox40)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox31)).EndInit();
@@ -579,6 +668,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxx24)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxG)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -626,5 +716,12 @@
         private System.Windows.Forms.Label lbl2;
         private System.Windows.Forms.Label lbl1;
         private System.Windows.Forms.CheckBox checkIBCdikey;
+        private System.Windows.Forms.Label lblAgirlik;
+        private System.Windows.Forms.CheckBox checkAgirlik;
+        private System.Windows.Forms.Label lblCizgiX;
+        private System.Windows.Forms.Label lblCizgiY;
+        private System.Windows.Forms.PictureBox pictureBoxG;
+        private System.Windows.Forms.Label lblBrut;
+        private System.Windows.Forms.Label lblNet;
     }
 }

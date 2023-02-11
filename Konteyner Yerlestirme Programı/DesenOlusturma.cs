@@ -79,37 +79,37 @@ namespace Konteyner_Yerlestirme_Programı
         }
         private void btnIbcDikey_Click(object sender, EventArgs e)
         {
-            Secim = new DolumEkipmanlari { Adi = "IBCDikey", Genislik = 98, Yukseklik = 118, Gorsel = IbcGetir("2.jpg") };
+            Secim = new DolumEkipmanlari { Adi = "IBCDikey", Genislik = 98, Yukseklik = 118, Gorsel = IbcGetir("2.jpg"),agirlik=1165 };
             this.Close();
         }
 
         private void btnIbcYatay_Click(object sender, EventArgs e)
         {
-            Secim = new DolumEkipmanlari { Adi = "IBCYatay", Genislik = 118, Yukseklik = 98, Gorsel = IbcGetir("1.jpg") };
+            Secim = new DolumEkipmanlari { Adi = "IBCYatay", Genislik = 118, Yukseklik = 98, Gorsel = IbcGetir("1.jpg"),agirlik=1165 };
             this.Close();
         }
 
         private void btnPalet1_Click(object sender, EventArgs e)
         {
-            Secim = new DolumEkipmanlari { Adi = "Palet1", Genislik = 114, Yukseklik = 114, Gorsel = VarilGetir("001.jpg") };
+            Secim = new DolumEkipmanlari { Adi = "Palet1", Genislik = 114, Yukseklik = 114, Gorsel = VarilGetir("001.jpg"),agirlik=277 };
             this.Close();
         }
 
         private void btnPalet2_Click(object sender, EventArgs e)
         {
-            Secim = new DolumEkipmanlari { Adi = "Palet2", Genislik = 114, Yukseklik = 114, Gorsel = VarilGetir("002.jpg") };
+            Secim = new DolumEkipmanlari { Adi = "Palet2", Genislik = 114, Yukseklik = 114, Gorsel = VarilGetir("002.jpg"),agirlik=524 };
             this.Close();
         }
 
         private void btnPalet3_Click(object sender, EventArgs e)
         {
-            Secim = new DolumEkipmanlari { Adi = "Palet3", Genislik = 114, Yukseklik = 114, Gorsel = VarilGetir("003.jpg") };
+            Secim = new DolumEkipmanlari { Adi = "Palet3", Genislik = 114, Yukseklik = 114, Gorsel = VarilGetir("003.jpg"),agirlik=771 };
             this.Close();
         }
 
         private void btnPalet4_Click(object sender, EventArgs e)
         {
-            Secim = new DolumEkipmanlari { Adi = "Palet4", Genislik = 114, Yukseklik = 114, Gorsel = VarilGetir("004.jpg") };
+            Secim = new DolumEkipmanlari { Adi = "Palet4", Genislik = 114, Yukseklik = 114, Gorsel = VarilGetir("004.jpg"),agirlik=1018};
             this.Close();
         }
     }

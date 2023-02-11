@@ -16,5 +16,6 @@ namespace Konteyner_Yerlestirme_Programı
         public int Y;
        public Bitmap Gorsel;
         public string Konum;
+        public int agirlik;
     }
 }
