@@ -33,10 +33,16 @@ namespace Konteyner_Yerlestirme_Programı
                     var kalanVaril = Varilsayi % 4;
                     var tamdegerVaril = Varilsayi / 4;
                     var DesenList = IbcDizilim1(2, 1, new List<int>());
-                 
+              
               
                 if (Ibcsayi+tamdegerVaril+kalanVaril>20)                
                     MessageBox.Show("Yazdığınız değerler konteynıra sığmıyor", "UYARI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                else if (Ibcsayi > 18)
+                {
+                    MessageBox.Show("Yazdığınız değerler konteynıra sığmıyor", "UYARI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 else
                 {
                     PictureShow();
@@ -176,22 +182,35 @@ namespace Konteyner_Yerlestirme_Programı
             public int SagToplam;
             public int ToplamAgirlik;
         }
-        Point AgirlikMerkeziHesapla()
-        {
-            var OrtaX= new Point(pictureBoxG.Location.X, pictureBoxG.Location.Y + (pictureBoxG.Height / 2));
-            var OrtaY= new Point(pictureBoxG.Location.X + (pictureBoxG.Width / 2) , pictureBoxG.Location.Y);
-            var Olculer = KonteynirToplamAgirlik();
-            
-            var UstG=new Point(/*pictureBoxG.Location.X+*/(pictureBoxG.Width/2),/*pictureBoxG.Location.Y+*/(pictureBoxG.Height/4));
-            var AltG = new Point(/*pictureBoxG.Location.X + */(pictureBoxG.Width / 2), /*pictureBoxG.Location.Y +*/ (3 * pictureBoxG.Height / 4));
+        //Point AgirlikMerkeziHesapla()
+        //{
+        //    try
+        //    {
 
-            var SolG = new Point(/*pictureBoxG.Location.X +*/ (pictureBoxG.Width / 4), /*pictureBoxG.Location.Y + */pictureBoxG.Height / 2);
-            var SagG = new Point(/*pictureBoxG.Location.X +*/ (3 * pictureBoxG.Width / 4),/* pictureBoxG.Location.Y +*/ pictureBoxG.Height / 2);
+        //        var OrtaX = new Point(pictureBoxG.Location.X, pictureBoxG.Location.Y + (pictureBoxG.Height / 2));
+        //        var OrtaY = new Point(pictureBoxG.Location.X + (pictureBoxG.Width / 2), pictureBoxG.Location.Y);
+        //       var Olculer = KonteynirToplamAgirlik();
 
-            int toplamcarpilmisX =/* (Olculer.UstToplam * UstG.X) + (Olculer.AltToplam * AltG.X) +*/ (Olculer.SolToplam * SolG.X) + (Olculer.SagToplam * SagG.X);
-            int toplamcarpilmisY = (Olculer.UstToplam * UstG.Y) + (Olculer.AltToplam * AltG.Y);// + (Olculer.SolToplam * SolG.Y) + (Olculer.SagToplam * SagG.Y);
-            return new Point(toplamcarpilmisX/Olculer.ToplamAgirlik,toplamcarpilmisY/Olculer.ToplamAgirlik);
-        }
+        //        var UstG = new Point(/*pictureBoxG.Location.X+*/(pictureBoxG.Width / 2),/*pictureBoxG.Location.Y+*/(pictureBoxG.Height / 4)); 
+        //        var AltG = new Point(/*pictureBoxG.Location.X + */(pictureBoxG.Width / 2), /*pictureBoxG.Location.Y +*/ (3 * pictureBoxG.Height / 4));
+
+        //        var SolG = new Point(/*pictureBoxG.Location.X +*/ (pictureBoxG.Width / 4), /*pictureBoxG.Location.Y + */pictureBoxG.Height / 2);
+        //        var SagG = new Point(/*pictureBoxG.Location.X +*/ (3 * pictureBoxG.Width / 4),/* pictureBoxG.Location.Y +*/ pictureBoxG.Height / 2);
+
+        //        int toplamcarpilmisX =/* (Olculer.UstToplam * UstG.X) + (Olculer.AltToplam * AltG.X) +*/ (Olculer.SolToplam * SolG.X) + (Olculer.SagToplam * SagG.X);
+        //        int toplamcarpilmisY = (Olculer.UstToplam * UstG.Y) + (Olculer.AltToplam * AltG.Y);// + (Olculer.SolToplam * SolG.Y) + (Olculer.SagToplam * SagG.Y);
+        //        int LocationX = toplamcarpilmisX / Olculer.ToplamAgirlik;
+        //        int LocationY = toplamcarpilmisY / Olculer.ToplamAgirlik;
+
+                
+        //        return new Point(LocationX, LocationY);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return new Point((pictureBoxG.Width / 2), (pictureBoxG.Height / 2));
+        //    }
+          
+        //}
         int BrutKiloHesapla()
         {
             int toplamkilo = 0;
@@ -221,41 +240,69 @@ namespace Konteyner_Yerlestirme_Programı
             }
             return toplamkilo;
         }
-       KonteynirAgirlik KonteynirToplamAgirlik()
+       void KonteynirToplamAgirlik()
         {
             lblCizgiX.Location = new Point(groupBox1.Location.X, groupBox1.Location.Y + (groupBox1.Height / 2));
-            lblCizgiY.Location = new Point(groupBox1.Location.X + (groupBox1.Width / 2), groupBox1.Location.Y);
-            int LocationX = groupBox1.Location.X + (groupBox1.Width / 2);
-            int LocationY = groupBox1.Location.Y + (groupBox1.Height / 2)-10;
-            int usttoplam = 0;
-            int aratoplam = 0;
-            int alttoplam = 0;
-            int soltoplam = 0;
-            int sagtoplam = 0;
-            int toplamagirlik = 0;
+            lblCizgiY.Location = new Point(groupBox1.Location.X + (groupBox1.Width / 2)-2, groupBox1.Location.Y);
+            //int LocationX = groupBox1.Location.X + (groupBox1.Width / 2);
+            //int LocationY = groupBox1.Location.Y + (groupBox1.Height / 2)-10;
+            //int usttoplam = 0;
+            //int aratoplam = 0;
+            //int alttoplam = 0;
+            //int soltoplam = 0;
+            //int sagtoplam = 0;
+            //int toplamagirlik = 0;
             
-            for (int i = 0; i < 5; i++)
+            
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    for (int j = 0; j < 4; j++)
+            //    {
+            //     var item= olculist.FirstOrDefault(k => k.Konum == i.ToString() + j.ToString());
+            //        if (i<2)                    
+            //            usttoplam += item.Agirlik;
+                    
+            //        else if (i==2)
+            //        aratoplam+=item.Agirlik;
+            //        else if (i>2)
+            //        alttoplam+=item.Agirlik;
+
+            //        if (j%2!=0) //sag kismin kilosu                   
+            //            sagtoplam+=item.Agirlik;
+                    
+            //        else  // sol kısmın kilosu                   
+            //            soltoplam+=item.Agirlik;
+
+            //        toplamagirlik += item.Agirlik;
+
+                 
+            //    }
+            //}
+
+            for (int i = 0; i < olculist.Count; i++)
             {
-                for (int j = 0; j < 4; j++)
+                if (olculist[i].Konum[1] =='2') //sutun sayısı 1 den buyuk olunca
                 {
-                 var item= olculist.FirstOrDefault(k => k.Konum == i.ToString() + j.ToString());
-                    if (i<2)                    
-                        usttoplam += item.Agirlik;
-                    
-                    else if (i==2)
-                    aratoplam+=item.Agirlik;
-                    else if (i>2)
-                    alttoplam+=item.Agirlik;
+                    var picture = (PictureBox)Controls.Find("pictureBox" + olculist[i].Konum[0]+"0", true)[0];
+                    olculist[i] = new Olculer { Adi = olculist[i].Adi, Agirlik = olculist[i].Agirlik, Width = olculist[i].Width, Height = olculist[i].Height, Konum = olculist[i].Konum, LocationOrtaX = picture.Location.X + (olculist[i].Width / 2), LocationOrtaY = picture.Location.Y + (olculist[i].Height / 2) };//(picture.Location.X - groupBox1.Location.X) + (olculist[i].Width / 2);
 
-                    if (j%2!=0) //sag kismin kilosu                   
-                        sagtoplam+=item.Agirlik;
-                    
-                    else  // sol kısmın kilosu                   
-                        soltoplam+=item.Agirlik;
-
-                    toplamagirlik += item.Agirlik;
                 }
+                else if(olculist[i].Konum[1] == '3')
+                {
+                    var picture = (PictureBox)Controls.Find("pictureBox" + olculist[i].Konum[0] + "1", true)[0];
+                    olculist[i] = new Olculer { Adi = olculist[i].Adi, Agirlik = olculist[i].Agirlik, Width = olculist[i].Width, Height = olculist[i].Height, Konum = olculist[i].Konum, LocationOrtaX = picture.Location.X + (olculist[i].Width / 2), LocationOrtaY = picture.Location.Y + (olculist[i].Height / 2) };//(picture.Location.X - groupBox1.Location.X) + (olculist[i].Width / 2);
+
+                }
+                else
+                {
+                    var picture = (PictureBox)Controls.Find("pictureBox" + olculist[i].Konum, true)[0];
+
+                    olculist[i] = new Olculer { Adi = olculist[i].Adi, Agirlik = olculist[i].Agirlik, Width = olculist[i].Width, Height = olculist[i].Height, Konum = olculist[i].Konum, LocationOrtaX = picture.Location.X + (olculist[i].Width / 2), LocationOrtaY = picture.Location.Y + (olculist[i].Height / 2) };//(picture.Location.X - groupBox1.Location.X) + (olculist[i].Width / 2);
+
+                }
+
             }
+
             //for (int i = 0; i < 15; i++) // x ekseni ni hesaplamak için
             //{
             //    if (usttoplam > alttoplam + 210)
@@ -293,22 +340,27 @@ namespace Konteyner_Yerlestirme_Programı
             //        break;
             //}
 
-            usttoplam = usttoplam + (aratoplam / 2);
-            alttoplam = alttoplam + (aratoplam / 2);
+          //  usttoplam = usttoplam + (aratoplam / 2);
+          //  alttoplam = alttoplam + (aratoplam / 2);
 
-            //int toplamAgirlik = 0;
-            //int toplamcarpilmisAgirlikX = 0;
-            //int toplamcarpilmisAgirlikY = 0;
-            //for (int i = 0; i < olculist.Count; i++)
-            //{
-            //    toplamAgirlik = toplamAgirlik + olculist[i].Agirlik;
-            //    toplamcarpilmisAgirlikX = toplamcarpilmisAgirlikX + (olculist[i].Agirlik * olculist[i].LocationOrtaX);
-            //    toplamcarpilmisAgirlikY = toplamcarpilmisAgirlikY + (olculist[i].Agirlik * olculist[i].LocationOrtaY);
-            //}
-            //   int x = toplamcarpilmisAgirlikX / toplamAgirlik;
-            // int y = toplamcarpilmisAgirlikY / toplamAgirlik;
-            return new KonteynirAgirlik { UstToplam = usttoplam, AltToplam = alttoplam, AraToplam = aratoplam, SolToplam = soltoplam, SagToplam = sagtoplam, ToplamAgirlik = toplamagirlik };
+            int toplamAgirlik = 0;
+            int toplamcarpilmisAgirlikX = 0;
+            int toplamcarpilmisAgirlikY = 0;
+            for (int i = 0; i < olculist.Count; i++)
+            {
+                toplamAgirlik = toplamAgirlik + olculist[i].Agirlik;
+                toplamcarpilmisAgirlikX = toplamcarpilmisAgirlikX + (olculist[i].Agirlik * olculist[i].LocationOrtaX);
+                toplamcarpilmisAgirlikY = toplamcarpilmisAgirlikY + (olculist[i].Agirlik * olculist[i].LocationOrtaY);
+            }
+            toplamAgirlik = toplamAgirlik + 2040;
+            toplamcarpilmisAgirlikX = toplamcarpilmisAgirlikX + (2040 * (pictureBoxG.Width / 2));
+            toplamcarpilmisAgirlikY = toplamcarpilmisAgirlikY + (2040 *  (pictureBoxG.Height / 2));
+            int x = toplamcarpilmisAgirlikX / toplamAgirlik;
+            int y = toplamcarpilmisAgirlikY / toplamAgirlik;
+            Nokta = new Point(x, y);
+         //   return new KonteynirAgirlik { UstToplam = usttoplam, AltToplam = alttoplam, AraToplam = aratoplam, SolToplam = soltoplam, SagToplam = sagtoplam, ToplamAgirlik = toplamagirlik };
         }
+        public Point Nokta;
         private void DizilimMix_Load(object sender, EventArgs e)
         {
             // picture.Size = new Size(114, 114);
@@ -342,6 +394,8 @@ namespace Konteyner_Yerlestirme_Programı
             if (checkAgirlik.Checked == false)
                 lblAgirlik.Hide();
 
+            lblCizgiX.Size = new Size(2*(pictureBoxG.Width + 7), 4);
+            lblCizgiY.Size = new Size(4, pictureBoxG.Height + 2);
         
           
         }
@@ -591,7 +645,7 @@ namespace Konteyner_Yerlestirme_Programı
             var kalan = varilsayi % 4;
             var tamdeger = varilsayi / 4;
             int kalanvarmi = kalan == 0 ? 0 : 1;
-            bool Bittimi = false;
+           
             bool girdi = false;
             agirliklarList.Clear();
             //  olculist.Clear();
@@ -620,8 +674,11 @@ namespace Konteyner_Yerlestirme_Programı
                                     picture.Size = new Size(item.Genislik, item.Yukseklik);
                                     picture.Image = item.Gorsel;
                                     agirliklarList.Add(item.agirlik);
-
-                                    olculist[olculist.FindIndex(k => k.Konum == i.ToString() + j.ToString())] = new Olculer { Adi = item.Adi, Agirlik = item.agirlik, Height = item.Yukseklik, Width = item.Genislik, LocationX = item.X, LocationY = item.Y, Konum = item.Konum };
+                                    int index = olculist.FindIndex(k => k.Konum == i.ToString() + j.ToString());
+                                    if (index == -1)
+                                        olculist.Add(new Olculer { Adi = item.Adi, Agirlik = item.agirlik, Height = item.Yukseklik, Width = item.Genislik, LocationX = item.X, LocationY = item.Y, Konum = item.Konum });
+                                    else
+                                    olculist[index] = new Olculer { Adi = item.Adi, Agirlik = item.agirlik, Height = item.Yukseklik, Width = item.Genislik, LocationX = item.X, LocationY = item.Y, Konum = item.Konum };
                                     picture.Tag = false;
                                     break;
                                 }
@@ -1152,10 +1209,11 @@ namespace Konteyner_Yerlestirme_Programı
 
         private void pictureBoxG_Paint(object sender, PaintEventArgs e)
         {
-          //  e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            var konum = AgirlikMerkeziHesapla();
+            //  e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+         KonteynirToplamAgirlik();
+           
 
-           e.Graphics.FillEllipse(new SolidBrush(Color.Red), konum.X-8,konum.Y-8 ,15, 15);
+           e.Graphics.FillEllipse(new SolidBrush(Color.Red), Nokta.X-8,Nokta.Y-8 ,15, 15);
             e.Graphics.DrawLine(new Pen(Color.Blue, 3.0f), 0, (596 / 2) - 149, 250, (596 / 2) - 149);
             e.Graphics.DrawLine(new Pen(Color.Blue, 3.0f), 0, (596 / 2) +74, 250, (596 / 2) +74);
             // e.Graphics.DrawEllipse(new Pen(Color.Red,2f),100,100,5,5);
